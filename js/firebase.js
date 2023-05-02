@@ -40,7 +40,7 @@ function sendText(uname, text) {
   const newPostRef = push(dbRef); // ユニークキーを生成している
   set(newPostRef, msg); //ユニークKEYとMSG
   $("#output").scrollTop($("#output")[0].scrollHeight);
-  
+
   $("#text").find("p").remove();
 }
 
@@ -98,16 +98,33 @@ onChildAdded(dbRef, function (data) {
   //   msg.text +
   //   "</p></div>";
 
+  // ユーザーでアイコン切り替え
+  let image_src = "";
+  if (msg.uname == "hachi") {
+    image_src = "./imgs/hachi.jpg";
+    console.log(msg.uname);
+  } else if (msg.uname == "chii") {
+    image_src = "./imgs/chii.png";
+  } else {
+    image_src = "./imgs/usagi.png";
+  }
+
+  // let h =
+  //   '<div class="message d-flex align-items-center">' +
+  //   '<img src="./imgs/hachi.jpg" class="user-icon" />' +
+  //   "<p id='username_style'>" +
+  //   msg.uname +
+  //   "</p>" +
+  //   "</div>" +
+  //   "<p id='text_style'>" +
+  //   msg.text +
+  //   "</p>";
   let h =
-    '<div class="message d-flex align-items-center">' +
-    '<img src="./imgs/hachi.jpg" class="user-icon" />' +
-    "<p id='username_style'>" +
-    msg.uname +
-    "</p>" +
-    "</div>" +
-    "<p id='text_style'>" +
-    msg.text +
-    "</p>";
+  '<div class="message d-flex align-items-center">' +
+  '<img src="' + image_src + '" class="user-icon" />' +
+  '<p id="username_style">' + msg.uname + '</p>' +
+  '</div>' +
+  '<p id="text_style">' + msg.text + '</p>';
   let btn = '<button id="deleteBtn">' + "test" + "</button>";
   $("#output").append(h);
   // $("#output p:last-child").addClass("bg-success text-white rounded p-1");

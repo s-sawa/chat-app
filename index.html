@@ -31,15 +31,24 @@
         display: inline-block;
         max-width: 80%;
       }
+      @media (max-width: 767px) {
+        .btn {
+          font-size: 18px;
+          padding: 10px 20px;
+        }
+        .form-label {
+          font-size: 18px;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="container bg-light my-custom-font">
+    <div class="container-fiuld bg-light my-custom-font">
       <div class="row">
         <div class="col-md-12">
-          <div class="mb-3">
+          <div class="m-1 mt-3">
             <div class="d-flex justify-content-center text-center mt-4">
-              <h1 class="bg-success rounded-pill col-2 text-light p-1">CHAT</h1>
+              <h1 class="bg-success rounded-pill col-4 text-light p-1">CHAT</h1>
             </div>
             <label
               for="uname"
@@ -48,25 +57,31 @@
             >
             <input type="text" class="form-control bg-light" id="uname" />
           </div>
-          <div class="mb-3">
+          <div class="m-1 mt-3">
             <label
               for="text"
               class="form-label bg-success text-light rounded-pill col p-1"
               >MESSAGE</label
             >
+            <div class="m-1">
+              <button class="btn btn-outline-success" id="send">SEND</button>
+              <button class="btn btn-outline-success" id="deleteAll">
+                DELETE
+              </button>
+            </div>
             <textarea
               class="form-control bg-light"
               id="text"
               rows="5"
             ></textarea>
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <button class="btn btn-outline-success" id="send">SEND</button>
             <button class="btn btn-outline-success" id="deleteAll">
               DELETE
             </button>
-          </div>
-          <div class="mb-1">
+          </div> -->
+          <div class="m-1 mt-3">
             <label
               for="text"
               class="form-label bg-success text-light rounded-pill col p-1"
@@ -77,13 +92,7 @@
           <button class="btn btn-outline-success" id="stop">STOP</button>
         </div>
         <div class="col-md-12">
-          <!-- <div
-            class="border p-2"
-            id="output"
-            style="height: 300px; overflow: auto bg-light"
-          >
-          </div> -->
-          <div class="col-md-12">
+          <div class="">
             <div
               class="border p-2 overflow-auto bg-light"
               id="output"
