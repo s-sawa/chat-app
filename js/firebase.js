@@ -40,10 +40,7 @@ function sendText(uname, text) {
   const newPostRef = push(dbRef); // ユニークキーを生成している
   set(newPostRef, msg); //ユニークKEYとMSG
   $("#output").scrollTop($("#output")[0].scrollHeight);
-
-  $("#text").find("p").remove();
 }
-
 // エンターキーで送信
 $("#text").on("keydown", function (e) {
   if (e.key == "Enter" && (e.metaKey || e.ctrlKey)) {
@@ -55,49 +52,13 @@ $("#text").on("keydown", function (e) {
       text: $("#text").val(),
     };
     sendText(msg.uname, msg.text);
-    // const newPostRef = push(dbRef); // ユニークキーを生成している
-    // set(newPostRef, msg); //ユニークKEYとMSG
     $("#output").scrollTop($("#output")[0].scrollHeight);
   }
 });
-
-// キーに対応する文字取得
-$("#gettext").on("click", function () {
-  // var key = "-NUBUeEfHsU5sqYcfdwl";
-  var key = keyArry[0];
-
-  // データを取得
-  const db = getDatabase();
-  const databaseRef = ref(db, "chat/" + key);
-  onValue(databaseRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      const text = data.text;
-      console.log("取得したテキスト:", text);
-    } else {
-      console.log("指定したキーに対するデータが存在しません。");
-    }
-  });
-});
-
-// チャットに紐づくユニークキーを配列にいれていく
-let keyArry = [];
-
 onChildAdded(dbRef, function (data) {
   // データをとる
   const msg = data.val();
   const key = data.key; // ユニークKEY
-
-  keyArry.push(key);
-  // console.log(keyArry); // 送信時のkeyを配列に追加していく
-  // let h = "<p>" + msg.uname + "<br>" + msg.text + "</p>";
-  // let h =
-  //   "<div class='message'><img src='./imgs/hachi.jpg' class='user-icon'><p>" +
-  //   msg.uname +
-  //   "<br>" +
-  //   msg.text +
-  //   "</p></div>";
-
   // ユーザーでアイコン切り替え
   let image_src = "";
   if (msg.uname == "hachi") {
@@ -108,31 +69,34 @@ onChildAdded(dbRef, function (data) {
   } else {
     image_src = "./imgs/usagi.png";
   }
-
-  // let h =
-  //   '<div class="message d-flex align-items-center">' +
-  //   '<img src="./imgs/hachi.jpg" class="user-icon" />' +
-  //   "<p id='username_style'>" +
-  //   msg.uname +
-  //   "</p>" +
-  //   "</div>" +
-  //   "<p id='text_style'>" +
-  //   msg.text +
-  //   "</p>";
+  // 選択チャット削除ボタン
+  const delBtn = '<div class="del_btn"><img src="./imgs/delete.png"></div>';
   let h =
-  '<div class="message d-flex align-items-center">' +
-  '<img src="' + image_src + '" class="user-icon" />' +
-  '<p id="username_style">' + msg.uname + '</p>' +
-  '</div>' +
-  '<p id="text_style">' + msg.text + '</p>';
-  let btn = '<button id="deleteBtn">' + "test" + "</button>";
+    "<div data-key=" +
+    key +
+    ">" +
+    '<div class="message d-flex align-items-center">' +
+    '<img src="' +
+    image_src +
+    '" class="user-icon" />' +
+    '<p id="username_style">' +
+    msg.uname +
+    "</p>" +
+    "</div>" +
+    "<div class='align-items-center'>" +
+    '<p id="text_style">' +
+    msg.text +
+    "</p>" +
+    "<button id='testdel' class='test'>" +
+    '<img src="./imgs/delete.png" class="del_btn" alt="">' +
+    "</button>" +
+    "</div>" +
+    "</div>";
+
   $("#output").append(h);
-  // $("#output p:last-child").addClass("bg-success text-white rounded p-1");
   $("#output #username_style").addClass("bg-info text-white rounded p-1");
   $("#output #text_style").addClass("bubble");
-  // $("#output #text_style").addClass("bg-success text-white rounded p-1");
 
-  // $("#output").append(btn);
   $("#output").scrollTop($("#output")[0].scrollHeight);
 });
 
@@ -144,33 +108,12 @@ $("#deleteAll").on("click", function () {
   $("#text").empty();
 });
 
-// 一部消すボタン
-// $("#aaa").on("click", function () {
-//   const kesu2 = ref(db, "chat/-NU9oK1d3s72x05V4bjV");
-//   // $("#output").remove();
-//   remove(kesu2);
-//   alert("一部消した");
-// });
-
-// 一部消すボタン パスを変数に持たせる
-// $("#aaa").on("click", function () {
-//   // let path = "chat/-NU9oKe0o5VgHvzlrdTt"
-//   let path = `chat/${keyArry[0]}`;
-
-//   const kesu2 = ref(db, path);
-//   // $("#output").remove();
-//   remove(kesu2);
-//   alert("一部消した");
-// });
-
-// $("#deleteBtn").on("click", function () {
-//   alert("delete");
-// });
-
-// $("#output").on("click", "#deleteBtn", function () {
-//   let p = $("#output").find("p");
-//   $("#output").remove
-// });
+$("#output").on("click", "#testdel", function () {
+  const key = $(this).parent().parent().data("key");
+  console.log(key);
+  remove(ref(db, "chat/" + key));
+  $(this).parent().parent().remove();
+});
 
 const recognition = new webkitSpeechRecognition(); // APIオブジェクト作成
 recognition.continuous = true; // 音声認識を連続的に行う
