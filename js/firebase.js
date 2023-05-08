@@ -40,6 +40,7 @@ function sendText(uname, text) {
   const newPostRef = push(dbRef); // ユニークキーを生成している
   set(newPostRef, msg); //ユニークKEYとMSG
   $("#output").scrollTop($("#output")[0].scrollHeight);
+  $("#text").val("");
 }
 // エンターキーで送信
 $("#text").on("keydown", function (e) {
@@ -54,6 +55,16 @@ $("#text").on("keydown", function (e) {
     sendText(msg.uname, msg.text);
     $("#output").scrollTop($("#output")[0].scrollHeight);
   }
+});
+
+$("#send").on("click", function () {
+  const msg = {
+    // キー：バリュー
+    uname: $("#uname").val(),
+    text: $("#text").val(),
+  };
+  sendText(msg.uname, msg.text);
+  $("#output").scrollTop($("#output")[0].scrollHeight);
 });
 onChildAdded(dbRef, function (data) {
   // データをとる
